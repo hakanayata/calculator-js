@@ -103,30 +103,38 @@
   @media (max-width: 576px) {
 
     .calculator {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         border-radius: 30px;
-        height: 550px;
-        width: 300px;
-        padding: 5px;
+        height: 100%;
+        width: 100%;
+        padding: 20px;
       }
       
       .display {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        margin-top: 0;
+        margin-bottom: 1rem;
         height: 200px;
         width: 100%;
-        padding: 20px;
-        font-size: 50px;
+        font-size: 60px;
       }
+
       .previous-display {
-        font-size: 30px;
+        font-size: 40px;
       }
       
       .buttons-container {
-        grid-gap: 8px;
+        grid-gap: 12px;
       }
       
       .button {
         font-size: 32px;
-        height: 60px;
-        width: 60px;
+        height: 72px;
+        width: 72px;
       }
 
       .division,
@@ -145,7 +153,7 @@
         grid-column: 1 / span 2;
         justify-content: flex-start;
         padding-left: 20px;
-        width: 128px;
+        width: 156px;
       }
 
   }

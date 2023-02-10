@@ -1,0 +1,151 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    
+  }
+  
+  body {
+    font-family: "Helvetica Neue", sans-serif;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .calculator {
+    background: black;
+    border-radius: 50px;
+    color: white;
+    height: 840px;
+    width: 500px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .display {
+    height: 240px;
+    width: 100%;
+    text-align: right;
+    padding: 20px;
+    font-size: 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  .previous-display {
+    opacity: 0.6;
+    font-size: 36px;
+    overflow: hidden;
+  }
+  
+  .buttons-container {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+  }
+  
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #333;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 45px;
+    height: 100px;
+    width: 100px;
+    transition: filter 0.3s;
+  }
+  
+  .button.function {
+    color: black;
+    background: #a5a5a5;
+  }
+  
+  .button.operator {
+    background: orangered;
+  }
+  
+  .equal {
+    background: #f1a33c;
+    font-size: 60px ;
+    padding-bottom: 12px;
+  }
+
+  .division {
+    font-size: 60px;
+    padding-bottom: 12px;
+  }
+  
+  
+  .button.number-0 {
+    border-radius: 55px;
+    grid-column: 1 / span 2;
+    justify-content: flex-start;
+    padding-left: 43px;
+    width: 215px;
+  }
+  
+  .button:active,
+  .button:focus {
+    filter: brightness(120%);
+  }
+  
+  .button:hover {
+    opacity: 0.5;
+  }
+
+  @media (max-width: 576px) {
+
+    .calculator {
+        border-radius: 30px;
+        height: 550px;
+        width: 300px;
+        padding: 5px;
+      }
+      
+      .display {
+        height: 200px;
+        width: 100%;
+        padding: 20px;
+        font-size: 50px;
+      }
+      .previous-display {
+        font-size: 30px;
+      }
+      
+      .buttons-container {
+        grid-gap: 8px;
+      }
+      
+      .button {
+        font-size: 32px;
+        height: 60px;
+        width: 60px;
+      }
+
+      .division,
+      .equal {
+        font-size: 40px;
+        padding-bottom: 10px;
+      }
+      
+      .button.function {
+        color: black;
+        background: #a5a5a5;
+      }
+      
+      .button.number-0 {
+        border-radius: 50px;
+        grid-column: 1 / span 2;
+        justify-content: flex-start;
+        padding-left: 20px;
+        width: 128px;
+      }
+
+  }

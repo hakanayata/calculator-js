@@ -115,9 +115,9 @@
       .display {
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: space-between;
+        margin-bottom: .5rem;
         margin-top: 0;
-        margin-bottom: 1rem;
         height: 200px;
         width: 100%;
         font-size: 60px;

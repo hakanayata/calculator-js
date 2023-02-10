@@ -20,21 +20,26 @@ acBtn.addEventListener('click', () => {
     prevDisplay.textContent = ''
     currentDisplay.textContent = '0'
     prevDisplayContent = ''
-    currentDisplayContent = ''
+    currentDisplayContent = '0'
 })
 
 // show buttons on display when pressed
 numberBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-        if (prevDisplayContent === '' || prevDisplayContent === null) {
-            if (currentDisplay.textContent === '0') {
+        if (prevDisplay.textContent === '') {
+            if (currentDisplay.textContent === '') {
                 currentDisplay.textContent = btn.textContent
+                currentDisplayContent = currentDisplay.textContent
+            } else if (currentDisplay.textContent === '0') {
+                currentDisplay.textContent = btn.textContent
+                currentDisplayContent = currentDisplay.textContent
             } else {
                 currentDisplay.textContent += btn.textContent
+                currentDisplayContent = currentDisplay.textContent
             }
         } else {
-            currentDisplayContent += btn.textContent
-            currentDisplay.textContent = currentDisplayContent
+            currentDisplay.textContent += btn.textContent
+            currentDisplayContent = currentDisplay.textContent
         }
     })
 })
@@ -44,21 +49,24 @@ decimalBtn.addEventListener("click", () => {
     if (currentDisplay.textContent.includes(".")) {
         return null
     } else if (currentDisplay.textContent === '') {
-        currentDisplay.textContent = '0.'
+        currentDisplay.textContent = "0."
+        currentDisplayContent = currentDisplay.textContent
     } else {
         currentDisplay.textContent += '.'
+        currentDisplayContent = currentDisplay.textContent
     }
+    console.log(currentDisplayContent)
 })
 
 // todo: operator can be used once until equal
 // when operator pressed, move current disp to uppermost disp
 operatorBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-        prevDisplayContent = currentDisplay.textContent + btn.textContent
-        prevDisplay.textContent = prevDisplayContent
+        prevDisplay.textContent = currentDisplay.textContent + btn.textContent
+        prevDisplayContent = prevDisplay.textContent
+        currentDisplay.textContent = ''
         currentDisplayContent = ''
-        // currentDisplay.textContent = ''
-        console.log(prevDisplayContent[prevDisplayContent.length - 1] === "－")
+
         if (prevDisplayContent[prevDisplayContent.length - 1] === "－") {
             if (btn.textContent === "－") {
                 return null
@@ -144,10 +152,19 @@ equalBtn.addEventListener("click", () => {
         default:
             break;
     }
+    if (isNaN(currentDisplay.textContent)) {
+        prevDisplayContent = ""
+        prevDisplay.textContent = ""
+        currentDisplay.textContent = "Error"
+        currentDisplayContent = currentDisplay.textContent
+    } else {
+        prevDisplayContent = ""
+        prevDisplay.textContent = ""
+        currentDisplayContent = currentDisplay.textContent
 
-    prevDisplayContent = currentDisplay.textContent
-    prevDisplay.textContent = prevDisplayContent
-    currentDisplayContent = ''
+        console.log("prevDisp", prevDisplay.textContent, "prevCont", prevDisplayContent)
+        console.log("curDisp", currentDisplay.textContent, "currCont", currentDisplayContent)
+    }
 })
 
 

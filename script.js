@@ -10,10 +10,12 @@ const currentDisplay = document.querySelector(".current-display")
 const decimalBtn = document.querySelector(".decimal")
 
 // variables
-let prevDisplayContent = "";
-let currentDisplayContent = "";
-let operator = "";
-let equalOrPercentPressed = false;
+let prevDisplayContent = ""
+let currentDisplayContent = ""
+let operator = ""
+let numbers = []
+let operators = []
+let equalPressed = false
 
 // AC button
 acBtn.addEventListener('click', () => {
@@ -21,26 +23,36 @@ acBtn.addEventListener('click', () => {
     currentDisplay.textContent = '0'
     prevDisplayContent = ''
     currentDisplayContent = '0'
+    operator = ''
 })
 
 // show buttons on display when pressed
 numberBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-        if (prevDisplay.textContent === '') {
-            if (currentDisplay.textContent === '') {
+
+        // app starts / AC pressed (opr unknown)
+        if (operator === '') {
+            // if there's 0 on display
+            if (currentDisplay.textContent === '0') {
                 currentDisplay.textContent = btn.textContent
-                currentDisplayContent = currentDisplay.textContent
-            } else if (currentDisplay.textContent === '0') {
-                currentDisplay.textContent = btn.textContent
-                currentDisplayContent = currentDisplay.textContent
             } else {
                 currentDisplay.textContent += btn.textContent
-                currentDisplayContent = currentDisplay.textContent
             }
+            // if operator known
         } else {
-            currentDisplay.textContent += btn.textContent
-            currentDisplayContent = currentDisplay.textContent
+            // if user types 0 first, can't use numbers anymore unless "."
+            if (currentDisplay.textContent.startsWith("0") && !currentDisplay.textContent.includes(".")) {
+                return null
+            }
+            // if result is on the current display
+            if (equalPressed) {
+                currentDisplay.textContent = btn.textContent
+                equalPressed = false
+            } else {
+                currentDisplay.textContent += btn.textContent
+            }
         }
+
     })
 })
 
@@ -55,61 +67,46 @@ decimalBtn.addEventListener("click", () => {
         currentDisplay.textContent += '.'
         currentDisplayContent = currentDisplay.textContent
     }
-    console.log(currentDisplayContent)
 })
 
-// todo: operator can be used once until equal
 // when operator pressed, move current disp to uppermost disp
 operatorBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-        prevDisplay.textContent = currentDisplay.textContent + btn.textContent
-        prevDisplayContent = prevDisplay.textContent
-        currentDisplay.textContent = ''
-        currentDisplayContent = ''
+        number = currentDisplay.textContent.slice(0, currentDisplay.textContent.length)
+        operator = btn.textContent
+        numbers.push(number)
+        operators.push(operator)
 
-        if (prevDisplayContent[prevDisplayContent.length - 1] === "－") {
-            if (btn.textContent === "－") {
-                return null
-            } else if (btn.textContent === "＋") {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "＋"
-            } else if (btn.textContent === "✕") {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "✕"
-            } else {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "÷"
-            }
-        } else if (prevDisplayContent[prevDisplayContent.length - 1] === "＋") {
-            if (btn.textContent === "＋") {
-                return null
-            } else if (btn.textContent === "－") {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "－"
-            } else if (btn.textContent === "✕") {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "✕"
-            } else {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "÷"
-            }
+        // if nothing shows on current display (at least 2nd turn of opr. presses)
+        if (!currentDisplay.textContent) {
+            let previous_operator = operators[operator.length - 1]
 
-        } else if (prevDisplayContent[prevDisplayContent.length - 1] === "✕") {
-            if (btn.textContent === "✕") {
+            if (previous_operator === operator) {
+                prevDisplay.textContent = numbers[0] + operator
+                prevDisplayContent = prevDisplay.textContent
                 return null
-            } else if (btn.textContent === "－") {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "－"
-            } else if (btn.textContent === "＋") {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "＋"
             } else {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "÷"
+                prevDisplay.textContent = numbers[0] + operator
+                prevDisplayContent = prevDisplay.textContent
             }
+            // first time an operator pressed
         } else {
-            if (btn.textContent === "÷") {
-                return null
-            } else if (btn.textContent === "－") {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "－"
-            } else if (btn.textContent === "＋") {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "＋"
+            if (operator === "＋") {
+                prevDisplay.textContent = currentDisplay.textContent + operator
+                prevDisplayContent = prevDisplay.textContent
+            } else if (operator === "－") {
+                prevDisplay.textContent = currentDisplay.textContent + operator
+                prevDisplayContent = prevDisplay.textContent
+            } else if (operator === "✕") {
+                prevDisplay.textContent = currentDisplay.textContent + operator
+                prevDisplayContent = prevDisplay.textContent
             } else {
-                prevDisplayContent = prevDisplayContent.slice(0, prevDisplayContent.length) + "✕"
+                prevDisplay.textContent = currentDisplay.textContent + operator
+                prevDisplayContent = prevDisplay.textContent
             }
         }
-
+        currentDisplay.textContent = ''
+        currentDisplayContent = ''
     })
 })
 
@@ -134,6 +131,8 @@ percentBtn.addEventListener("click", () => {
 // OPERATIONS: when equal pressed
 equalBtn.addEventListener("click", () => {
     operator = prevDisplayContent[prevDisplayContent.length - 1]
+    numbers = []
+    operators = []
 
     switch (operator) {
         case '＋':
@@ -157,13 +156,12 @@ equalBtn.addEventListener("click", () => {
         prevDisplay.textContent = ""
         currentDisplay.textContent = "Error"
         currentDisplayContent = currentDisplay.textContent
+        equalPressed = true
     } else {
         prevDisplayContent = ""
         prevDisplay.textContent = ""
         currentDisplayContent = currentDisplay.textContent
-
-        console.log("prevDisp", prevDisplay.textContent, "prevCont", prevDisplayContent)
-        console.log("curDisp", currentDisplay.textContent, "currCont", currentDisplayContent)
+        equalPressed = true
     }
 })
 

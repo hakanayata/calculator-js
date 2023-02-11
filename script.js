@@ -21,8 +21,6 @@ let equalPressed = false
 acBtn.addEventListener('click', () => {
     prevDisplay.textContent = ''
     currentDisplay.textContent = '0'
-    prevDisplayContent = ''
-    currentDisplayContent = '0'
     operator = ''
 })
 
@@ -33,7 +31,7 @@ numberBtns.forEach(btn => {
         // app starts / AC pressed (opr unknown)
         if (operator === '') {
             // if there's 0 on display
-            if (currentDisplay.textContent === '0') {
+            if (currentDisplay.textContent === '0' || currentDisplay.textContent === '-0') {
                 currentDisplay.textContent = btn.textContent
             } else {
                 currentDisplay.textContent += btn.textContent
@@ -52,7 +50,8 @@ numberBtns.forEach(btn => {
                 currentDisplay.textContent += btn.textContent
             }
         }
-
+        // flush numbers array, so that numbers[0] changes for operations
+        numbers = []
     })
 })
 
@@ -62,10 +61,8 @@ decimalBtn.addEventListener("click", () => {
         return null
     } else if (currentDisplay.textContent === '') {
         currentDisplay.textContent = "0."
-        currentDisplayContent = currentDisplay.textContent
     } else {
         currentDisplay.textContent += '.'
-        currentDisplayContent = currentDisplay.textContent
     }
 })
 
@@ -76,6 +73,8 @@ operatorBtns.forEach(btn => {
         operator = btn.textContent
         numbers.push(number)
         operators.push(operator)
+        console.log(numbers)
+        console.log(operators)
 
         // if nothing shows on current display (at least 2nd turn of opr. presses)
         if (!currentDisplay.textContent) {
@@ -83,30 +82,23 @@ operatorBtns.forEach(btn => {
 
             if (previous_operator === operator) {
                 prevDisplay.textContent = numbers[0] + operator
-                prevDisplayContent = prevDisplay.textContent
                 return null
             } else {
                 prevDisplay.textContent = numbers[0] + operator
-                prevDisplayContent = prevDisplay.textContent
             }
             // first time an operator pressed
         } else {
             if (operator === "＋") {
                 prevDisplay.textContent = currentDisplay.textContent + operator
-                prevDisplayContent = prevDisplay.textContent
             } else if (operator === "－") {
                 prevDisplay.textContent = currentDisplay.textContent + operator
-                prevDisplayContent = prevDisplay.textContent
             } else if (operator === "✕") {
                 prevDisplay.textContent = currentDisplay.textContent + operator
-                prevDisplayContent = prevDisplay.textContent
             } else {
                 prevDisplay.textContent = currentDisplay.textContent + operator
-                prevDisplayContent = prevDisplay.textContent
             }
         }
         currentDisplay.textContent = ''
-        currentDisplayContent = ''
     })
 })
 
@@ -130,37 +122,33 @@ percentBtn.addEventListener("click", () => {
 
 // OPERATIONS: when equal pressed
 equalBtn.addEventListener("click", () => {
-    operator = prevDisplayContent[prevDisplayContent.length - 1]
+    operator = prevDisplay.textContent[prevDisplay.textContent.length - 1]
     numbers = []
     operators = []
 
     switch (operator) {
         case '＋':
-            currentDisplay.textContent = format_if_decimal(strNumberConversion(currentDisplay.textContent) + strNumberConversion(prevDisplayContent.slice(0, prevDisplayContent.length - 1)))
+            currentDisplay.textContent = format_if_decimal(strNumberConversion(currentDisplay.textContent) + strNumberConversion(prevDisplay.textContent.slice(0, prevDisplay.textContent.length - 1)))
             break;
         case '－':
-            currentDisplay.textContent = format_if_decimal(strNumberConversion(prevDisplayContent.slice(0, prevDisplayContent.length - 1)) - strNumberConversion(currentDisplay.textContent))
+            currentDisplay.textContent = format_if_decimal(strNumberConversion(prevDisplay.textContent.slice(0, prevDisplay.textContent.length - 1)) - strNumberConversion(currentDisplay.textContent))
             break;
         case '✕':
-            currentDisplay.textContent = format_if_decimal(strNumberConversion(currentDisplay.textContent) * strNumberConversion(prevDisplayContent.slice(0, prevDisplayContent.length - 1)))
+            currentDisplay.textContent = format_if_decimal(strNumberConversion(currentDisplay.textContent) * strNumberConversion(prevDisplay.textContent.slice(0, prevDisplay.textContent.length - 1)))
             break;
         case '÷':
-            currentDisplay.textContent = format_if_decimal(strNumberConversion(prevDisplayContent.slice(0, prevDisplayContent.length - 1)) / strNumberConversion(currentDisplay.textContent))
+            currentDisplay.textContent = format_if_decimal(strNumberConversion(prevDisplay.textContent.slice(0, prevDisplay.textContent.length - 1)) / strNumberConversion(currentDisplay.textContent))
             break;
 
         default:
             break;
     }
     if (isNaN(currentDisplay.textContent)) {
-        prevDisplayContent = ""
         prevDisplay.textContent = ""
         currentDisplay.textContent = "Error"
-        currentDisplayContent = currentDisplay.textContent
         equalPressed = true
     } else {
-        prevDisplayContent = ""
         prevDisplay.textContent = ""
-        currentDisplayContent = currentDisplay.textContent
         equalPressed = true
     }
 })

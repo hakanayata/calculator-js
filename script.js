@@ -6,15 +6,18 @@ class Calculator {
     }
 
     clear() {
-        this.previousOperand = ''
-        this.currentOperand = ''
+        this.previousOperand = ""
+        this.currentOperand = ""
         this.operator = undefined
     }
 
     appendNumber(number) {
-        if (number === "." && this.currentOperand.includes(".")) return
-        if (equalsPressed) {
-            this.currentOperand = ''
+        if (number === "." && this.currentOperand.toString().includes(".")) { return }
+        if (number === "0" && this.currentOperand.toString().startsWith("0") && !this.currentOperand.toString().includes(".")) {
+            return
+        }
+        if (equalsPressed || this.currentOperand === "Error") {
+            this.currentOperand = ""
             equalsPressed = false
         }
         this.currentOperand = this.currentOperand.toString() + number.toString()
@@ -34,8 +37,8 @@ class Calculator {
     }
 
     chooseOperator(operator) {
-        if (this.currentOperand === '') return
-        if (this.previousOperand !== '') {
+        if (this.currentOperand === "") return
+        if (this.previousOperand !== "") {
             this.calculate()
         }
         this.operator = operator
@@ -67,16 +70,22 @@ class Calculator {
         }
         this.currentOperand = calculation
         this.operator = undefined
-        this.previousOperand = ''
+        this.previousOperand = ""
     }
 
     updateDisplay() {
         this.currentOperandTextElement.textContent = this.currentOperand
+
+        if (isNaN(this.currentOperandTextElement.textContent) || (this.previousOperand !== '' && isNaN(this.previousOperand))) {
+            this.currentOperandTextElement.textContent = "Error"
+            this.previousOperandTextElement.textContent = ""
+            return
+        }
         if (this.operator) {
             this.previousOperandTextElement.textContent =
                 `${this.previousOperand} ${this.operator}`
         } else {
-            this.previousOperandTextElement.textContent = ''
+            this.previousOperandTextElement.textContent = ""
         }
     }
 }
@@ -122,12 +131,12 @@ operatorBtns.forEach(btn => {
     })
 })
 
-pmBtn.addEventListener("click", () => {
-    calculator.prependPM()
+percentBtn.addEventListener("click", () => {
+    calculator.calculatePercentage()
     calculator.updateDisplay()
 })
 
-percentBtn.addEventListener("click", () => {
-    calculator.calculatePercentage()
+pmBtn.addEventListener("click", () => {
+    calculator.prependPM()
     calculator.updateDisplay()
 })

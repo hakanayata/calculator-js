@@ -25,7 +25,8 @@ class Calculator {
     }
 
     prependPM() {
-        if (this.currentOperand.startsWith("-")) {
+        console.log(typeof (this.currentOperand))
+        if (this.currentOperand.toString().startsWith("-")) {
             this.currentOperand = this.currentOperand.toString().slice(1)
         } else {
             this.currentOperand = "-" + this.currentOperand.toString()

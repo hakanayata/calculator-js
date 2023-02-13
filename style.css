@@ -36,7 +36,7 @@
     flex-direction: column;
     justify-content: space-evenly;
   }
-  .previous-display {
+  .previous-operand {
     opacity: 0.6;
     font-size: 36px;
     overflow: hidden;
@@ -124,7 +124,7 @@
         padding: 20px 16px 20px 20px
       }
 
-      .previous-display {
+      .previous-operand {
         font-size: 40px;
       }
       

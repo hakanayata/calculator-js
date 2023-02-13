@@ -75,8 +75,9 @@ class Calculator {
 
     updateDisplay() {
         this.currentOperandTextElement.textContent = this.currentOperand
+        console.log(this.currentOperand)
 
-        if (isNaN(this.currentOperandTextElement.textContent) || (this.previousOperand !== '' && isNaN(this.previousOperand))) {
+        if (this.currentOperand !== "." && isNaN(Number(this.currentOperandTextElement.textContent)) || (this.previousOperand !== '' && isNaN(Number(this.previousOperand)))) {
             this.currentOperandTextElement.textContent = "Error"
             this.previousOperandTextElement.textContent = ""
             return

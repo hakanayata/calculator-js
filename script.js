@@ -51,6 +51,12 @@ class Calculator {
         let prev = Number(this.previousOperand)
         let curr = Number(this.currentOperand)
         if (isNaN(prev) || isNaN(curr)) return
+        if (prev === 0 && curr === 0) {
+            this.currentOperand = "Error"
+            this.previousOperand = ''
+            this.operator = undefined
+            return
+        }
 
         switch (this.operator) {
             case "＋":
@@ -77,11 +83,6 @@ class Calculator {
         this.currentOperandTextElement.textContent = this.currentOperand
         console.log(this.currentOperand)
 
-        if (this.currentOperand !== "." && isNaN(Number(this.currentOperandTextElement.textContent)) || (this.previousOperand !== '' && isNaN(Number(this.previousOperand)))) {
-            this.currentOperandTextElement.textContent = "Error"
-            this.previousOperandTextElement.textContent = ""
-            return
-        }
         if (this.operator) {
             this.previousOperandTextElement.textContent =
                 `${this.previousOperand} ${this.operator}`

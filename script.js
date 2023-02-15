@@ -28,7 +28,6 @@ class Calculator {
     }
 
     prependPM() {
-        console.log(typeof (this.currentOperand))
         if (this.currentOperand.toString().startsWith("-")) {
             this.currentOperand = this.currentOperand.toString().slice(1)
         } else {
@@ -81,7 +80,6 @@ class Calculator {
 
     updateDisplay() {
         this.currentOperandTextElement.textContent = this.currentOperand
-        console.log(this.currentOperand)
 
         if (this.operator) {
             this.previousOperandTextElement.textContent =
